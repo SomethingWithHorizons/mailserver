@@ -1,9 +1,9 @@
 FROM debian:stretch
 
 RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get update && \
-    apt-get upgrade && \
-    apt-get install git
+    apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get -y install git
 
 RUN git clone https://github.com/SomethingWithHorizons/mailserver.wiki.git /tmp/wiki
 
