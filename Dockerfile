@@ -7,5 +7,5 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN git clone https://github.com/SomethingWithHorizons/mailserver.wiki.git /tmp/wiki
 
-sed -n '/```shell/,/```/p; 1d' Mail-server_Package-installation.md | sed '$d; 1d'
+RUN sed -n '/```shell/,/```/p; 1d' /tmp/wiki/Mail-server_Package-installation.md | sed '$d; 1d' | bash
 
