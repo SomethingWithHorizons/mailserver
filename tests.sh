@@ -19,7 +19,7 @@ tester "Domain 'example.com' not exists" \
 
 echo ""
 
-echo " Verify whether Postfix correctly (in)validates email addresses:"
+echo "Verify whether Postfix correctly (in)validates email addresses:"
 tester "User account 'john.doe@example.org' exists" \
         "test 1 -eq `postmap -q john.doe@example.org mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf`"
 tester "User account 'jane.doe@example.org' not exists" \
