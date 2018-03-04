@@ -39,8 +39,6 @@ fi
 # Create a temporary directory where the opendkim generated files will be stored
 cd `mktemp -d`
 
-echo "Created temporary directory: `pwd`"
-
 # Generate a DKIM key for specified domain
 echo "Generating DKIM key for '${DOMAIN}'..."
 opendkim-genkey --restrict --bits=${BITS} --selector=${SELECTOR} --domain=${DOMAIN}
@@ -52,27 +50,8 @@ PUBLIC_DNS=`cat ${SELECTOR}.txt | tr -d '\n'`
 PUBLIC_KEY=`echo ${PUBLIC_DNS} | sed 's/" "//g' | cut -d '"' -f2`
 STRIPPED_PRIVATE_KEY=`cat ${SELECTOR}.private | tr -d '\n' | sed 's/-----\(BEGIN\|END\) RSA PRIVATE KEY-----//g'`
 
-echo ""
+mysql -e"INSERT INTO \`mailserver\`.\`dkim\` (\`domain\`, \`selector\`, \`private_key\`, \`public_key\`) VALUES ('${DOMAIN}', '${SELECTOR}', '${STRIPPED_PRIVATE_KEY}', '${PUBLIC_KEY}') ON DUPLICATE KEY UPDATE \`private_key\` = '${STRIPPED_PRIVATE_KEY}', \`public_key\` = '${PUBLIC_KEY}';"
 
-echo -e "The keys are succesfully generated with the following details:"
-
-echo "Domain:"
-echo "${DOMAIN}"
-echo ""
-echo "Selector:"
-echo "${SELECTOR}"
-echo ""
-echo "Key size:"
-echo "${BITS} bits"
-echo ""
-echo  "Public key:"
-echo  "`echo ${PUBLIC_KEY} | awk -F'p=' {'print $2'}`"
-echo ""
-echo  "Private key:"
-echo  "${PRIVATE_KEY}"
-echo ""
-echo "DNS TXT record content for '${SELECTOR}._domainkey.${DOMAIN}':"
-echo "${PUBLIC_KEY}"
-echo ""
-echo "MySQL Query:"
-echo "INSERT INTO \`mailserver\`.\`dkim\` (\`domain\`, \`selector\`, \`private_key\`, \`public_key\`) VALUES ('${DOMAIN}', '${SELECTOR}', '${STRIPPED_PRIVATE_KEY}', '${PUBLIC_KEY}');"
+echo -e "The keys are succesfully generated!"
+echo -e "Please add/update the following TXT record for host '${SELECTOR}._domainkey' for your domain '${DOMAIN}':"
+echo ${PUBLIC_KEY}
