@@ -4,7 +4,7 @@ function tester() {
   DESCRIPTION=${1}
   COMMAND=${2}
 
-  if ( `eval ${COMMAND}` ); then
+  if ( `eval ${COMMAND} 2>/dev/null` ); then
     echo -e "[\e[32mSUCCESS\e[39m] ${DESCRIPTION}"
   else
     echo -e "[\e[31mFAILED\e[39m] ${DESCRIPTION}"
