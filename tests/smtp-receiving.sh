@@ -23,9 +23,10 @@ if [ -z ${MAIL_SERVER_IP} ]; then
   exit
 fi
 
-echo " " > /var/log/mail.log
-echo " " > /var/log/mail.err
-echo " " > /var/log/mail.info
+# Part of the risky tests; temporarily disabled
+#echo " " > /var/log/mail.log
+#echo " " > /var/log/mail.err
+#echo " " > /var/log/mail.info
 
 tester "Test whether e-mails to a known user / known domain combination gets accepted" \
         "swaks --to john.doe@example.org --server ${MAIL_SERVER_IP} | grep '250 2.0.0 Ok: queued as'"
