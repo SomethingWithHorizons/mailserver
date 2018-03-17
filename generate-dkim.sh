@@ -52,6 +52,6 @@ STRIPPED_PRIVATE_KEY=`cat ${SELECTOR}.private | tr -d '\n' | sed 's/-----\(BEGIN
 
 mysql -e"INSERT INTO \`mailserver\`.\`dkim\` (\`domain\`, \`selector\`, \`private_key\`, \`public_key\`) VALUES ('${DOMAIN}', '${SELECTOR}', '${STRIPPED_PRIVATE_KEY}', '${PUBLIC_KEY}') ON DUPLICATE KEY UPDATE \`private_key\` = '${STRIPPED_PRIVATE_KEY}', \`public_key\` = '${PUBLIC_KEY}';"
 
-echo -e "The keys are succesfully generated!"
-echo -e "Please add/update the following TXT record for host '${SELECTOR}._domainkey' for your domain '${DOMAIN}':"
-echo ${PUBLIC_KEY}
+echo -e "\nThe keys are succesfully generated!"
+echo -e "Please create/update a TXT record with host '${SELECTOR}._domainkey' containing:"
+echo -e "\n${PUBLIC_KEY}"
